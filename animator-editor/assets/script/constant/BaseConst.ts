@@ -4,7 +4,7 @@ export enum ParamType {
     BOOLEAN = 1,
     NUMBER = 2,
     TRIGGER = 3,
-    AUTO_TRIGGER = 4
+    FLOAT = 4
 }
 
 /** 逻辑类型 */
@@ -78,6 +78,11 @@ export interface ConditionData {
     value: number;
     /** 此条件与值比较的逻辑 */
     logic: LogicType;
+
+    // 右值参数名称
+    rparam: string;
+    // 右值是否使用参数
+    useparam: number;
 }
 
 /** 

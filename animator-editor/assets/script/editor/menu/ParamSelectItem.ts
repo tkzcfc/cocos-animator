@@ -10,16 +10,21 @@ export default class ParamSelectItem extends cc.Component {
 
     private _paramItem: ParamItem = null;
     private _conditionItem: ConditionItem = null;
+    private _isRightParam: boolean = false;
 
-    public onInit(paramItem: ParamItem, conditionItem: ConditionItem) {
+    public onInit(paramItem: ParamItem, conditionItem: ConditionItem, isRightParam: boolean) {
         this._paramItem = paramItem;
         this._conditionItem = conditionItem;
+        this._isRightParam = isRightParam
 
         this.ParamName.string = this._paramItem.paramName;
     }
 
     private onClick() {
-        this._conditionItem.onReset(this._paramItem);
+        if(this._isRightParam)
+            this._conditionItem.onSelectRightParamName(this._paramItem);
+        else
+            this._conditionItem.onReset(this._paramItem);
         Events.emit(EventName.CLOSE_MENU);
     }
 }

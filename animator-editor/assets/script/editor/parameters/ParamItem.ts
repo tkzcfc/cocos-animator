@@ -23,7 +23,6 @@ export default class ParamItem extends cc.Component implements RecycleNode {
         if (this._paramName === v) {
             return;
         }
-
         this._paramName = v;
         this.NameEdit.string = v;
         Events.emit(EventName.PARAM_NAME_CHANGED, this);
@@ -61,7 +60,9 @@ export default class ParamItem extends cc.Component implements RecycleNode {
             if (e.active) {
                 if (this.type === ParamType.NUMBER) {
                     e.getComponent(cc.EditBox).string = `${this.init}`;
-                } else {
+                } else if (this.type === ParamType.FLOAT) {
+                    e.getComponent(cc.EditBox).string = `${this.init}`;
+                }else {
                     e.getComponent(cc.Toggle).isChecked = this.init === 1 ? true : false;
                 }
             }

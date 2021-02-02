@@ -61,6 +61,9 @@ export enum EventName {
     SHOW_LOGIC,
     /** 显示multiplier选择界面 */
     SHOW_MULTIPLIER,
+
+    /** 显示参数右值 */
+    SHOW_RIGHT_PARAM_SELECT,
 };
 
 /**

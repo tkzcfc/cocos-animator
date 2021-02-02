@@ -413,6 +413,12 @@ export default class FsmCtr extends cc.Component {
                 let condition: Condition = transition.addCondition(paramItem);
                 condition.value = cData.value;
                 condition.logic = cData.logic;
+                condition.useParam = cData.useparam;
+                condition.rightParam = cData.rparam;
+                if(cData.useparam !== 0)
+                {
+                    condition._rightParamItem = paramMap.get(cData.rparam);
+                }
             });
         });
     }

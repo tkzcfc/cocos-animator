@@ -201,8 +201,42 @@ export default class Menu extends cc.Component {
         Editor.Inst.Parameters.ParamContent.children.forEach((e) => {
             let node: cc.Node = RecyclePool.get(ParamSelectItem) || cc.instantiate(Res.getLoaded(ResUrl.PREFAB.PARAM_SELECT_ITEM));
             this.ParamSelect.content.addChild(node);
-            node.getComponent(ParamSelectItem).onInit(e.getComponent(ParamItem), conditionItem);
+            node.getComponent(ParamSelectItem).onInit(e.getComponent(ParamItem), conditionItem, false);
             node.width = target.width;
+        });
+
+        let num = cc.misc.clampf(this.ParamSelect.content.childrenCount, 1, 10);
+        this.ParamSelect.node.height = 40 * num + 10;
+        this.ParamSelect.content.parent.height = 40 * num + 10;
+        this.ParamSelect.node.width = target.width;
+        Tool.updateWidget(this.ParamSelect.node);
+        this.ParamSelect.node.getChildByName('scrollBar').active = this.ParamSelect.content.childrenCount > 10;
+        if (worldPos.y - target.height / 2 - this.ParamSelect.node.height > 0) {
+            this.ParamSelect.node.position = this.node.convertToNodeSpaceAR(cc.v2(worldPos.x, worldPos.y - target.height / 2));
+        } else {
+            this.ParamSelect.node.position = this.node.convertToNodeSpaceAR(cc.v2(worldPos.x, worldPos.y + target.height / 2 + this.ParamSelect.node.height));
+        }
+    }
+
+    @preloadEvent(EventName.SHOW_RIGHT_PARAM_SELECT)
+    private onEventShowRightParamSelect(target: cc.Node, conditionItem: ConditionItem) {
+        this.show(this.ParamSelect.node);
+
+        let worldPos: cc.Vec2 = target.parent.convertToWorldSpaceAR(target.position.sub(cc.v2(0, 0)));
+        for (let i = this.ParamSelect.content.childrenCount - 1; i >= 0; i--) {
+            RecyclePool.put(ParamSelectItem, this.ParamSelect.content.children[i]);
+        }
+        // 生成item
+        Editor.Inst.Parameters.ParamContent.children.forEach((e) => {
+            let curItem = e.getComponent(ParamItem)
+            if(curItem.type == conditionItem.condition.paramItem.type &&
+                curItem.paramName !== conditionItem.condition.paramItem.paramName)
+            {
+                let node: cc.Node = RecyclePool.get(ParamSelectItem) || cc.instantiate(Res.getLoaded(ResUrl.PREFAB.PARAM_SELECT_ITEM));
+                this.ParamSelect.content.addChild(node);
+                node.getComponent(ParamSelectItem).onInit(e.getComponent(ParamItem), conditionItem, true);
+                node.width = target.width;
+            }
         });
 
         let num = cc.misc.clampf(this.ParamSelect.content.childrenCount, 1, 10);

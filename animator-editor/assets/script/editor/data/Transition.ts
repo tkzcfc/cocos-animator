@@ -81,6 +81,10 @@ export default class Transition {
     @preloadEvent(EventName.PARAM_DELETE)
     private onEventParamDelete(paramItem: ParamItem) {
         for (let i = this._conditions.length - 1; i >= 0; i--) {
+            if(this._conditions[i]._rightParamItem === paramItem){
+                this._conditions[i]._rightParamItem = null
+                this._conditions[i].useParam = 0
+            }
             if (this._conditions[i].paramItem === paramItem) {
                 this._conditions.splice(i, 1);
             }
