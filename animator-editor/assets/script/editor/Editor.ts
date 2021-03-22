@@ -94,4 +94,12 @@ export default class Editor extends cc.Component {
         // 移除
         document.body.removeChild(eleLink);
     }
+
+    private onClickSave() {
+        this.exportProject()
+    }
+
+    private onClickExport(){
+        this.exportRuntimeData()
+    }
 }

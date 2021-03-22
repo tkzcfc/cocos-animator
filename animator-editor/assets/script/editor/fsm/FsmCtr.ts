@@ -543,6 +543,21 @@ export default class FsmCtr extends cc.Component {
         if (stateMap.has(defaultStateData))
             this.MachineLayer.defaultState = stateMap.get(defaultStateData);
 
+        while (true) {
+            let isDel = false
+
+            for (let e of anyStateData.transitions) {
+                let toState: State = stateMap.get(e.toState);
+                if(toState == null){
+                    isDel = true
+                    Tool.arrayDelete(anyStateData.transitions, e)
+                    break;
+                }
+            }
+            if(isDel == false)
+                break;
+        }
+
         this.importTransitions(anyStateData.transitions, this.MachineLayer.anyState.state, stateMap, paramMap);
         statesData.forEach((e: any) => {
             let state: State = stateMap.get(e.state);
